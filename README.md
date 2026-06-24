@@ -53,6 +53,8 @@ Logs from the background daemon are written to `~/Library/Logs/qobuz-bridge.log`
 
 > **Known limitation:** `player-0.json` exposes the playback position but not a discrete play/pause flag, so the bridge reports state as `"playing"` whenever a track is detected. Pause detection will improve once the underlying state file exposes it.
 
+> **Known limitation:** in **System Settings → Login Items → "Allow in the Background"**, the daemon shows as **"Node.js Foundation"** rather than "Qobuz Bridge". macOS attributes background items by the code signature of the executable (here, the `node` binary) — there is no setting to override the name. This is cosmetic; the daemon works normally. Tracked in [#1](https://github.com/kud/qobuz-bridge/issues/1).
+
 ## Development
 
 ```sh
