@@ -16,7 +16,7 @@
     "daemon"
   ],
   "bin": {
-    "qobuz-bridge": "./dist/index.js"
+    "qobuz-bridge": "dist/index.js"
   },
   "files": [
     "dist"
