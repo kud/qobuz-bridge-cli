@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process"
+import { existsSync } from "node:fs"
 import { mkdir, rm, writeFile } from "node:fs/promises"
 import { homedir } from "node:os"
 import { dirname, join } from "node:path"
@@ -12,8 +13,13 @@ const plistPath = join(homedir(), "Library", "LaunchAgents", `${LABEL}.plist`)
 const logPath = join(homedir(), "Library", "Logs", "qobuz-bridge.log")
 const scriptPath = fileURLToPath(new URL("./index.js", import.meta.url))
 
-// launchd does not expand ~ or consult the login shell's PATH, so every path is
-// absolute and the node binary is the exact one running this install.
+// launchd does not expand ~ or consult the login shell's PATH, so the node path
+// must be absolute. Prefer mise's shim, which resolves the active node at runtime
+// and survives runtime upgrades; process.execPath pins to a version-specific mise
+// install that breaks the moment mise prunes it.
+const miseNodeShim = join(homedir(), ".local", "share", "mise", "shims", "node")
+const nodePath = existsSync(miseNodeShim) ? miseNodeShim : process.execPath
+
 const plist = () => `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -21,7 +27,7 @@ const plist = () => `<?xml version="1.0" encoding="UTF-8"?>
   <key>Label</key><string>${LABEL}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>${process.execPath}</string>
+    <string>${nodePath}</string>
     <string>${scriptPath}</string>
   </array>
   <key>RunAtLoad</key><true/>
