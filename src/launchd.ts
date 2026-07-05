@@ -32,9 +32,11 @@ const SIGN_IDENTITY_NAME = "Qobuz Bridge Code Signing"
 
 const resolveSigningIdentity = async (): Promise<string> => {
   try {
+    // No `-v`: a self-signed cert is untrusted (CSSMERR_TP_NOT_TRUSTED) so `-v`
+    // hides it, but codesign signs with it fine and TCC keys the grant on its
+    // stable hash regardless of trust — which is the whole point.
     const { stdout } = await exec("security", [
       "find-identity",
-      "-v",
       "-p",
       "codesigning",
     ])
