@@ -26,11 +26,20 @@
 npm install -g @kud/qobuz-bridge
 ```
 
-Requires macOS and Node.js ≥ 20. The Qobuz desktop app must be installed, and a Qobuz token must be present in the macOS Keychain (as set up by `@kud/qobuz`). The `install` command's daemon process needs Accessibility permission to intercept media keys.
+Requires macOS and Node.js ≥ 20, with the Qobuz desktop app installed. Then connect your account once:
+
+```sh
+qobuz-bridge login
+```
+
+This stores a Qobuz token in the macOS Keychain (service `"qobuz"`, shared with the rest of the `@kud/qobuz` suite — if you've already run `qobuz login` from `@kud/qobuz-cli`, you're connected and can skip this). The `install` command's daemon process needs Accessibility permission to intercept media keys.
 
 ## Usage
 
 ```console
+$ qobuz-bridge login
+✓ connected — token stored in the Keychain (service "qobuz").
+
 $ qobuz-bridge
 qobuz-bridge running — open Control Center. Ctrl-C to quit.
 now playing → Intro — The xx
@@ -43,11 +52,12 @@ $ qobuz-bridge uninstall
 removed login item → ~/Library/LaunchAgents/io.kud.qobuz-bridge.plist
 ```
 
-| Command                  | Effect                                               |
-| ------------------------ | ---------------------------------------------------- |
-| `qobuz-bridge`           | Run the daemon in the foreground (Ctrl-C to quit)    |
-| `qobuz-bridge install`   | Register a launchd login item; starts the daemon now |
-| `qobuz-bridge uninstall` | Remove the login item (daemon stops at next reboot)  |
+| Command                  | Effect                                                 |
+| ------------------------ | ------------------------------------------------------ |
+| `qobuz-bridge login`     | Connect your Qobuz account; stores a token in Keychain |
+| `qobuz-bridge`           | Run the daemon in the foreground (Ctrl-C to quit)      |
+| `qobuz-bridge install`   | Register a launchd login item; starts the daemon now   |
+| `qobuz-bridge uninstall` | Remove the login item (daemon stops at next reboot)    |
 
 Logs from the background daemon are written to `~/Library/Logs/qobuz-bridge.log`.
 
