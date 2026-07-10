@@ -1,6 +1,6 @@
 {
   "name": "@kud/qobuz-bridge",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Background daemon that bridges Qobuz into macOS Now Playing — Control Center tile, artwork, and working media buttons",
   "type": "module",
   "license": "MIT",
